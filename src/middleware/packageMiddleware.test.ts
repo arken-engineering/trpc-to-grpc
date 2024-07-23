@@ -5,7 +5,7 @@ import { jest } from '@jest/globals';
 const t = initTRPC
   .context<{
     packageOptions?: {
-      packages: string[];
+      packageName: string;
       options: {
         go_package: string;
       };
@@ -21,7 +21,7 @@ describe('packageMiddleware', () => {
       ctx,
       next: () => {
         expect(ctx.packageOptions).toEqual({
-          packages: ['threads'],
+          packageName: 'threads',
           options: { go_package: '/example' },
         });
       },

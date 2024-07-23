@@ -4,7 +4,7 @@ import { customTransformer } from '../transformer';
 export const t = initTRPC
   .context<{
     packageOptions?: {
-      packages: string[];
+      packageName: string;
       options: {
         go_package: string;
       };
@@ -14,10 +14,10 @@ export const t = initTRPC
     transformer: customTransformer,
   });
 
-export const packageMiddleware = (input: any) =>
-  t.middleware(async ({ ctx, next }: any) => {
+export const packageMiddleware = (input: any) => {
+  return t.middleware(async function packageMiddleware({ ctx, next }: any) {
     const packageOptions = {
-      packages: input.packages,
+      packageName: input.packageName,
       options: input.options,
     };
 
@@ -27,6 +27,7 @@ export const packageMiddleware = (input: any) =>
       ctx,
     });
   });
+};
 
 // Example: Logging middleware
 export const loggingMiddleware = () =>
@@ -39,41 +40,3 @@ export const loggingMiddleware = () =>
 
 export const publicProcedure = t.procedure;
 export const router = t.router;
-
-// (options: PackageOptions): MiddlewareFunction<any, any> => {
-//   return async ({ ctx, next }) => {
-//     return next({
-//       ctx: {
-//         ...ctx,
-//         packageOptions: options,
-//       },
-//     });
-//   };
-// };
-// // src/middleware/packageMiddleware.ts
-// import { Middleware } from '@trpc/server';
-
-// export const packageMiddleware: Middleware<any, any> = async ({ ctx, next }) => {
-//   ctx.packageOptions = options
-//   return next();
-// };
-
-// // src/middleware/packageMiddleware.ts
-// import { Middleware } from '@trpc/server';
-
-// interface PackageOptions {
-//   packages: string[];
-//   options: {
-//     go_package: string;
-//   };
-// }
-
-// export const packageMiddleware: Middleware<any, any, PackageOptions> = async ({ ctx, next, path, type, input, rawInput, meta }) => {
-//   ctx.packageOptions = {
-//     packages: ['threads'],
-//     options: { go_package: '/example' },
-//   };
-//   return next({
-//     ctx,
-//   });
-// };

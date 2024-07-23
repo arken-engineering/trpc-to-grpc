@@ -104,8 +104,10 @@ export const generateProtoFile = (router: any, outputPath: string) => {
     if (procedure._def.middlewares) {
       // @ts-ignore
       for (const middleware of procedure._def.middlewares) {
+        // @ts-ignore
+        console.log(middleware);
         if (middleware.name === 'packageMiddleware') {
-          packageOptions = middleware.options;
+          packageOptions = { ...packageOptions, ...(middleware.options || {}) };
         }
       }
     }
