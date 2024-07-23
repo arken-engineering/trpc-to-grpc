@@ -1,0 +1,201 @@
+
+  syntax = "proto3";
+  
+  package none;
+  
+  
+  service none {
+    rpc Create(CreateRequest) returns (CreateResponse);
+  rpc GetMany(GetManyRequest) returns (GetManyResponse);
+  rpc GetOne(GetOneRequest) returns (GetOneResponse);
+  rpc MakeHat(MakeHatRequest) returns (MakeHatResponse);
+  rpc Send(SendRequest) returns (SendResponse);
+  rpc Execute(ExecuteRequest) returns (ExecuteResponse);
+  rpc OpenTable(OpenTableRequest) returns (OpenTableResponse);
+  rpc OpenColumn(OpenColumnRequest) returns (OpenColumnResponse);
+
+  }
+  
+  message CreateRequest {
+  string name = 1;
+  string description = 2;
+  string content = 3;
+  string owner = 4;
+}
+
+message CreateResponse {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string content = 4;
+  string created_at = 5;
+  string updated_at = 6;
+  string owner = 7;
+  repeated string images = 8;
+}
+
+message GetManyRequest {
+  int32 page = 1;
+  int32 limit = 2;
+}
+
+message GetManyResponse repeated {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string content = 4;
+  string created_at = 5;
+  string updated_at = 6;
+  string owner = 7;
+  repeated string images = 8;
+}
+
+message GetOneRequest {
+  string id = 1;
+}
+
+message GetOneResponse {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string content = 4;
+  string created_at = 5;
+  string updated_at = 6;
+  string owner = 7;
+  repeated string images = 8;
+}
+
+message MakeHatRequest {
+  int32 inches = 1;
+}
+
+message MakeHatResponse {
+  int32 size = 1;
+  string color = 2;
+  string name = 3;
+}
+
+message SendRequest {
+
+}
+
+message SendResponse {
+
+}
+
+message ExecuteRequest {
+  string schema = 1;
+  {
+  int32 bits = 1;
+  int32 program = 2;
+} privilege = 2;
+  bool read_only = 3;
+  bool wants_row_key = 4;
+  bool wants_column_name = 5;
+  int32 max_data_size = 6;
+  repeated {
+  {
+  string hash = 1;
+} table_id = 1;
+  {
+  string hash = 1;
+} column_id = 2;
+  {
+  string hash = 1;
+} row_id = 3;
+  string row_key = 4;
+  int32 version = 5;
+  repeated {
+  enum op = 1;
+  string data = 2;
+  repeated {
+
+} fields = 3;
+  int32 min_version = 4;
+  int32 max_version = 5;
+  {
+
+} scan = 6;
+  int32 limit = 7;
+  enum condition = 8;
+  string message = 9;
+} rops = 6;
+  int32 mutate_version = 7;
+  {
+  int32 bits = 1;
+  int32 program = 2;
+} privilege = 8;
+} operations = 7;
+  int32 timeout = 8;
+  {
+
+} agent_id = 9;
+  string query_name = 10;
+  string process_name = 11;
+}
+
+message ExecuteResponse {
+  int32 error_code = 1;
+  repeated {
+  int32 error_code = 1;
+  {
+  string hash = 1;
+} table_id = 2;
+  repeated {
+  {
+  string hash = 1;
+} column_id = 1;
+  {
+  string hash = 1;
+} row_id = 2;
+  string row_key = 3;
+  int32 version = 4;
+  string data = 5;
+} data = 3;
+} results = 2;
+  string error_message = 3;
+}
+
+message OpenTableRequest {
+  string schema = 1;
+  {
+  int32 bits = 1;
+  int32 program = 2;
+} privilege = 2;
+  {
+  string hash = 1;
+} table_id = 3;
+  {
+
+} agent_id = 4;
+  string process_name = 5;
+}
+
+message OpenTableResponse {
+
+}
+
+message OpenColumnRequest {
+  string schema = 1;
+  {
+  int32 bits = 1;
+  int32 program = 2;
+} privilege = 2;
+  {
+  string hash = 1;
+} table_id = 3;
+  {
+  string hash = 1;
+} column_id = 4;
+  string proto_type = 5;
+  {
+
+} agent_id = 6;
+  string process_name = 7;
+}
+
+message OpenColumnResponse {
+  bool server_field_ops = 1;
+}
+
+      

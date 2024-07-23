@@ -1,6 +1,7 @@
 import { initTRPC } from '@trpc/server';
 import { z } from 'zod';
-import { t, packageMiddleware, loggingMiddleware } from '../middleware/packageMiddleware'; // Adjust the path as necessary
+import { t, packageMiddleware, loggingMiddleware } from '../middleware/packageMiddleware';
+import { generateProtoFile } from '../generateProto';
 
 const Msg1Schema = z.object({});
 
@@ -36,7 +37,7 @@ export const CreateRequestSchema = z.object({
 
 export const appRouter = t.router({
   create: t.procedure
-    .use(packageMiddleware({ packages: ['threads'], options: { go_package: '/example' } }))
+    .use(packageMiddleware({ packageName: 'threads', options: { go_package: '/example' } }))
     .input(CreateRequestSchema)
     .output(ThreadModelSchema)
     .mutation(({ input }) => {
@@ -49,7 +50,7 @@ export const appRouter = t.router({
       };
     }),
   getMany: t.procedure
-    .use(packageMiddleware({ packages: ['threads'], options: { go_package: '/example' } }))
+    .use(packageMiddleware({ packageName: 'threads', options: { go_package: '/example' } }))
     .input(PaginationSchema)
     .output(z.array(ThreadModelSchema))
     .query(({ input }) => {
@@ -67,7 +68,7 @@ export const appRouter = t.router({
       ];
     }),
   getOne: t.procedure
-    .use(packageMiddleware({ packages: ['threads'], options: { go_package: '/example' } }))
+    .use(packageMiddleware({ packageName: 'threads', options: { go_package: '/example' } }))
     .input(IdRequestSchema)
     .output(ThreadModelSchema)
     .query(({ input }) => {
@@ -84,7 +85,10 @@ export const appRouter = t.router({
     }),
   makeHat: t.procedure
     .use(
-      packageMiddleware({ packages: ['twitch.twirp.example'], options: { go_package: '/example' } })
+      packageMiddleware({
+        packageName: 'twitch.twirp.example',
+        options: { go_package: '/example' },
+      })
     )
     .input(z.object({ inches: z.number() }))
     .output(
@@ -104,7 +108,7 @@ export const appRouter = t.router({
   send: t.procedure
     .use(
       packageMiddleware({
-        packages: ['twirp.internal.twirp', 'test.multiple'],
+        packageName: 'test.multiple',
         options: { go_package: '/multiple' },
       })
     )
@@ -116,7 +120,7 @@ export const appRouter = t.router({
   execute: t.procedure
     .use(
       packageMiddleware({
-        packages: ['network.protocol.storage'],
+        packageName: 'network.protocol.storage',
         options: { cc_generic_services: 'true' },
       })
     )
@@ -232,7 +236,7 @@ export const appRouter = t.router({
   openTable: t.procedure
     .use(
       packageMiddleware({
-        packages: ['network.protocol.storage'],
+        packageName: 'network.protocol.storage',
         options: { cc_generic_services: 'true' },
       })
     )
@@ -257,7 +261,7 @@ export const appRouter = t.router({
   openColumn: t.procedure
     .use(
       packageMiddleware({
-        packages: ['network.protocol.storage'],
+        packageName: 'network.protocol.storage',
         options: { cc_generic_services: 'true' },
       })
     )
@@ -290,3 +294,5 @@ export const appRouter = t.router({
 });
 
 export type AppRouter = typeof appRouter;
+
+generateProtoFile(appRouter, './proto/appRouter.proto');
