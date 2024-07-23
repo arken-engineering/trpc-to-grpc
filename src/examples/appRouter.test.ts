@@ -11,33 +11,39 @@ type Context = inferAsyncReturnType<typeof createContext>;
 type RouterInput = inferRouterInputs<AppRouter>;
 type RouterOutput = inferRouterOutputs<AppRouter>;
 
+let server: any;
+let client: ReturnType<typeof createTRPCProxyClient<AppRouter>>;
+
+const setupServer = async () => {
+  const trpcServer = createHTTPServer({
+    router: appRouter,
+    createContext,
+    // @ts-ignore
+    transformer: customTransformer,
+  });
+
+  trpcServer.listen(3030);
+
+  server = trpcServer.server
+
+  const url = `http://localhost:${(server.address() as any).port}`;
+  client = createTRPCProxyClient<AppRouter>({
+    links: [
+      httpBatchLink({
+        url,
+      }),
+    ],
+    transformer: customTransformer,
+  });
+};
+
+const teardownServer = (done: jest.DoneCallback) => {
+  server.close(done);
+};
+
 describe('tRPC Procedures', () => {
-  let server: http.Server;
-  let client: ReturnType<typeof createTRPCProxyClient<AppRouter>>;
-
-  beforeAll(async () => {
-    const trpcServer = createHTTPServer({
-      router: appRouter,
-      createContext,
-      transformer: customTransformer,
-    });
-
-    server = http.createServer(trpcServer).listen(3030);
-
-    const url = `http://localhost:${(server.address() as any).port}`;
-    client = createTRPCProxyClient<AppRouter>({
-      links: [
-        httpBatchLink({
-          url,
-        }),
-      ],
-      transformer: customTransformer,
-    });
-  });
-
-  afterAll((done) => {
-    server.close(done);
-  });
+  beforeAll(setupServer);
+  afterAll(teardownServer);
 
   it('should handle create procedure', async () => {
     const input: RouterInput['create'] = {

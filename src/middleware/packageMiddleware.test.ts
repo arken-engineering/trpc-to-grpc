@@ -2,14 +2,16 @@ import { packageMiddleware } from './packageMiddleware'; // Adjust the path as n
 import { initTRPC } from '@trpc/server';
 import { jest } from '@jest/globals';
 
-const t = initTRPC.context<{
-  packageOptions?: {
-    packages: string[];
-    options: {
-      go_package: string;
+const t = initTRPC
+  .context<{
+    packageOptions?: {
+      packages: string[];
+      options: {
+        go_package: string;
+      };
     };
-  };
-}>().create();
+  }>()
+  .create();
 
 describe('packageMiddleware', () => {
   it('should add package options to context', async () => {
@@ -18,13 +20,11 @@ describe('packageMiddleware', () => {
     await packageMiddleware({
       ctx,
       next: () => {
-
-    expect(ctx.packageOptions).toEqual({
-        packages: ['threads'],
-        options: { go_package: '/example' },
-      });
-      }
+        expect(ctx.packageOptions).toEqual({
+          packages: ['threads'],
+          options: { go_package: '/example' },
+        });
+      },
     });
-
   });
 });

@@ -1,40 +1,41 @@
 {
-    "name": "trpc-to-grpc",
-    "version": "1.0.0",
-    "description": "A tool to convert tRPC+Zod schemas to gRPC+Proto definition files.",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "scripts": {
-        "build": "tsc",
-        "prepublishOnly": "npm run build",
-        "test": "jest"
-    },
-    "keywords": [
-        "trpc",
-        "grpc",
-        "zod",
-        "proto",
-        "converter"
-    ],
-    "author": "Arken Technologies Inc.",
-    "license": "WTFPL",
-    "devDependencies": {
-        "@trpc/client": "^10.0.0",
-        "@trpc/server": "^10.0.0",
-        "@types/eslint": "^6.8.0",
-        "@types/jest": "^29.5.12",
-        "@types/node": "^18.11.9",
-        "@typescript-eslint/eslint-plugin": "^5.1.0",
-        "@typescript-eslint/parser": "^5.1.0",
-        "eslint": "~7.32.0",
-        "eslint-config-prettier": "^8.3.0",
-        "eslint-plugin-jest": "^24.4.0",
-        "jest": "^29.7.0",
-        "superjson": "^2.2.1",
-        "ts-jest": "^29.2.3",
-        "typescript": "^4.9.4"
-    },
-    "dependencies": {
-        "zod": "^3.11.6"
-    }
+  "name": "trpc-to-grpc",
+  "version": "1.0.0",
+  "description": "A tool to convert tRPC+Zod schemas to gRPC+Proto definition files.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "test": "jest"
+  },
+  "keywords": [
+    "trpc",
+    "grpc",
+    "zod",
+    "proto",
+    "converter"
+  ],
+  "author": "Arken Technologies Inc.",
+  "license": "WTFPL",
+  "devDependencies": {
+    "@trpc/client": "^10.0.0",
+    "@trpc/server": "^10.0.0",
+    "@types/eslint": "^6.8.0",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^18.11.9",
+    "@typescript-eslint/eslint-plugin": "^5.1.0",
+    "@typescript-eslint/parser": "^5.1.0",
+    "eslint": "~7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-jest": "^24.4.0",
+    "jest": "^29.7.0",
+    "superjson": "^2.2.1",
+    "ts-jest": "^29.2.3",
+    "typescript": "^4.9.4",
+    "prettier": "~2.4.1"
+  },
+  "dependencies": {
+    "zod": "^3.11.6"
+  }
 }
