@@ -248,15 +248,37 @@ message GetOneResponse {
   repeated string images = 8;
 }
 
+
+syntax = "proto3";
+
+package threads;
+
+import "google/protobuf/wrappers.proto";
+
+service Threads {
+  rpc Create(CreateRequest) returns (ThreadModel);
+  rpc GetMany(Pagination) returns (stream ThreadModel);
+  rpc GetOne(IdRequest) returns (ThreadModel);
+}
+
 message ThreadModel {
-  string value = 1;
-  string value = 2;
-  string value = 3;
-  string value = 4;
-  string value = 5;
-  string value = 6;
-  string value = 7;
-  repeated string images = 8;
+  google.protobuf.StringValue id = 1;
+  google.protobuf.StringValue name = 2;
+  google.protobuf.StringValue description = 3;
+  google.protobuf.StringValue content = 4;
+  google.protobuf.StringValue created_at = 5;
+  google.protobuf.StringValue updated_at = 6;
+  google.protobuf.StringValue owner = 7;
+  repeated google.protobuf.StringValue images = 8;
+}
+
+message Pagination {
+  google.protobuf.UInt64Value page = 1;
+  google.protobuf.UInt64Value limit = 2;
+}
+
+message IdRequest {
+  google.protobuf.StringValue id = 1;
 }
 
 message Msg1 {}
