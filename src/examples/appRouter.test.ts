@@ -1,4 +1,4 @@
-import { appRouter, AppRouter } from './basic';
+import { appRouter, AppRouter } from './appRouter';
 import { inferRouterInputs, inferRouterOutputs, inferAsyncReturnType } from '@trpc/server';
 import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
 import { createHTTPServer } from '@trpc/server/adapters/standalone';
