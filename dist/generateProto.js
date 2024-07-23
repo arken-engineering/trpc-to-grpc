@@ -41,9 +41,11 @@ const zodToProtoType = (zodType) => {
         return `repeated ${elementType}`;
     }
     else if (zodType instanceof zod_1.z.ZodObject) {
-        const fields = Object.entries(zodType.shape).map(([key, value], index) => {
+        const fields = Object.entries(zodType.shape)
+            .map(([key, value], index) => {
             return `  ${(0, exports.zodToProtoType)(value)} ${key} = ${index + 1};`;
-        }).join('\n');
+        })
+            .join('\n');
         return `{\n${fields}\n}`;
     }
     throw new Error(`Unsupported Zod type: ${zodType}`);
@@ -75,16 +77,23 @@ const generateProtoFile = (router, outputPath) => {
         }
         const packageName = packageOptions.packages.join('.');
         if (!services[packageName]) {
-            services[packageName] = { definitions: '', packageNames: packageOptions.packages, options: packageOptions.options };
+            services[packageName] = {
+                definitions: '',
+                packageNames: packageOptions.packages,
+                options: packageOptions.options,
+            };
         }
         services[packageName].definitions += `  ${rpcType} ${name.charAt(0).toUpperCase() + name.slice(1)}(${inputMessageName}) returns (${outputMessageName});\n`;
     }
-    const protoFileContent = Object.values(services).map(service => {
-        const options = Object.entries(service.options).map(([key, value]) => `option ${key} = "${value}";`).join('\n');
+    const protoFileContent = Object.values(services)
+        .map((service) => {
+        const options = Object.entries(service.options)
+            .map(([key, value]) => `option ${key} = "${value}";`)
+            .join('\n');
         return `
 syntax = "proto3";
 
-${service.packageNames.map(pkg => `package ${pkg};`).join('\n')}
+${service.packageNames.map((pkg) => `package ${pkg};`).join('\n')}
 ${options}
 
 service ${service.packageNames[service.packageNames.length - 1].split('.').pop()} {
@@ -93,7 +102,8 @@ ${service.definitions}
 
 ${Object.values(protoMessages).join('\n')}
     `;
-    }).join('\n');
+    })
+        .join('\n');
     fs.writeFileSync(outputPath, protoFileContent);
 };
 exports.generateProtoFile = generateProtoFile;

@@ -3,8 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.router = exports.publicProcedure = exports.loggingMiddleware = exports.packageMiddleware = exports.t = void 0;
 const server_1 = require("@trpc/server");
 const transformer_1 = require("../transformer");
-exports.t = server_1.initTRPC.context().create({
-    transformer: transformer_1.customTransformer
+exports.t = server_1.initTRPC
+    .context()
+    .create({
+    transformer: transformer_1.customTransformer,
 });
 const packageMiddleware = (input) => exports.t.middleware(async ({ ctx, next }) => {
     const packageOptions = {
